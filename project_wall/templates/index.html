@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ProjectWall</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🧱 ProjectWall</div>
+    <div class="meta">
+      <span id="summary">…</span>
+      <button id="refresh" type="button">Refresh</button>
+    </div>
+  </header>
+
+  <main id="grid" class="grid">
+    {% for p in projects %}
+    <section class="card" data-id="{{ p.id }}" style="--accent: {{ p.color }}">
+      <header class="card-head">
+        <span class="icon">{{ p.icon }}</span>
+        <h2>{{ p.name }}</h2>
+        <span class="stack">{{ p.stack }}</span>
+      </header>
+      <div class="status">
+        <span class="dot" data-state="idle"></span>
+        <span class="state-label">idle</span>
+        <span class="health" data-health="unknown">health: —</span>
+      </div>
+      <div class="links">
+        {% if p.local_url %}<a href="{{ p.local_url }}" target="_blank" rel="noopener">Local</a>{% endif %}
+        {% if p.live_url %}<a href="{{ p.live_url }}" target="_blank" rel="noopener">Live</a>{% endif %}
+        {% if p.obsidian %}<a href="{{ p.obsidian }}">Notes</a>{% endif %}
+      </div>
+      <div class="actions">
+        <button class="start" type="button">Start</button>
+        <button class="stop" type="button">Stop</button>
+        <button class="logs" type="button">Logs</button>
+      </div>
+      <pre class="logview" hidden></pre>
+    </section>
+    {% endfor %}
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

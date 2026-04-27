@@ -1,0 +1,42 @@
+version: 1
+
+defaults:
+  health_timeout_s: 30
+  idle_shutdown_min: 45
+
+projects:
+  - id: profsur
+    name: ProfSurProject
+    category: local
+    color: "#6E56CF"
+    icon: "🎓"
+    path: "c:/Users/hemas/Downloads/ProfSurProject"
+    stack: streamlit
+    command: ["streamlit", "run", "app.py", "--server.port", "{port}", "--server.headless", "true", "--server.address", "127.0.0.1"]
+    port: 8501
+    health: "http://127.0.0.1:{port}/_stcore/health"
+    live_url: "https://profsurproject-3my3og5qbs4mivchw4jqnh.streamlit.app"
+    obsidian: "obsidian://open?vault=MySecondBrain&file=Projects/ProfSurProject/ProfSurProject%20-%20Overview"
+
+  - id: bakerytest
+    name: BakeryTest
+    category: local
+    color: "#E07B4A"
+    icon: "🍞"
+    path: "c:/Users/hemas/Downloads/BakeryTest"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5176
+    health: "http://127.0.0.1:{port}/"
+    obsidian: "obsidian://open?vault=MySecondBrain&file=Projects/BakeryTest%20-%20Session%20Log%202026-03-24"
+
+  - id: ruview
+    name: RuView
+    category: local
+    color: "#3FA7D6"
+    icon: "📡"
+    path: "c:/Users/hemas/Downloads/RuView"
+    stack: uvicorn
+    command: ["uvicorn", "v1.src.api.main:app", "--host", "127.0.0.1", "--port", "{port}"]
+    port: 8012
+    health: "http://127.0.0.1:{port}/docs"
