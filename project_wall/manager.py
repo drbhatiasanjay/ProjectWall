@@ -57,6 +57,15 @@ class ProcessManager:
         candidate = Path(project.path) / head
         if candidate.exists() and os.access(candidate, os.X_OK):
             return [str(candidate), *argv[1:]]
+        if sys.platform == "win32":
+            # shutil.which on Windows can return extensionless bash scripts that
+            # CreateProcess can't run. Prefer .exe, then wrap .cmd/.bat in cmd.exe.
+            for suffix in (".exe", ".cmd", ".bat"):
+                w = shutil.which(head + suffix)
+                if w:
+                    if suffix in (".cmd", ".bat"):
+                        return ["cmd.exe", "/c", w, *argv[1:]]
+                    return [w, *argv[1:]]
         which = shutil.which(head)
         if which:
             return [which, *argv[1:]]
@@ -115,8 +124,8 @@ class ProcessManager:
                     bufsize=1,
                     creationflags=creationflags,
                 )
-            except FileNotFoundError as exc:
-                state.error = f"Executable not found: {exc}"
+            except (FileNotFoundError, OSError) as exc:
+                state.error = f"Start failed: {exc}"
                 log.write(f"[wall] start failed: {exc}")
                 return state
 

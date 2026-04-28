@@ -82,15 +82,16 @@ document.addEventListener('click', async (ev) => {
   try {
     if (btn.classList.contains('start')) {
       await api(`/api/projects/${id}/start`, { method: 'POST' });
-      refresh();
+      await refresh();
     } else if (btn.classList.contains('stop')) {
       await api(`/api/projects/${id}/stop`, { method: 'POST' });
-      refresh();
+      await refresh();
     } else if (btn.classList.contains('logs')) {
       await loadLogs(card);
     }
   } catch (err) {
-    alert(`Action failed: ${err.message}`);
+    const label = card.querySelector('.state-label');
+    if (label) label.textContent = `error: ${err.message}`;
   }
 });
 
