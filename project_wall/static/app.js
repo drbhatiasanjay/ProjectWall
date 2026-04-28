@@ -26,6 +26,13 @@ function setCardState(card, entry, health) {
     label.textContent = 'idle';
   }
 
+  const running = Boolean(state.running);
+  card.querySelector('.start').disabled = running;
+  card.querySelector('.stop').disabled  = !running;
+  card.querySelector('.logs').disabled  = !running;
+  const openLink = card.querySelector('.btn-open');
+  if (openLink) openLink.classList.toggle('disabled', !running);
+
   if (health) {
     if (health.ok) {
       healthEl.dataset.health = 'ok';
@@ -72,7 +79,7 @@ async function loadLogs(card) {
 
 document.addEventListener('click', async (ev) => {
   const btn = ev.target.closest('button');
-  if (!btn) return;
+  if (!btn || btn.disabled) return;
   const card = btn.closest('.card');
   if (!card) {
     if (btn.id === 'refresh') refresh();

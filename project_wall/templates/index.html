@@ -29,14 +29,14 @@
         <span class="health" data-health="unknown">health: —</span>
       </div>
       <div class="links">
-        {% if p.local_url %}<a href="{{ p.local_url }}" target="_blank" rel="noopener">Local</a>{% endif %}
         {% if p.live_url %}<a href="{{ p.live_url }}" target="_blank" rel="noopener">Live</a>{% endif %}
         {% if p.obsidian %}<a href="{{ p.obsidian }}">Notes</a>{% endif %}
       </div>
       <div class="actions">
         <button class="start" type="button">Start</button>
-        <button class="stop" type="button">Stop</button>
-        <button class="logs" type="button">Logs</button>
+        <button class="stop"  type="button" disabled>Stop</button>
+        <button class="logs"  type="button" disabled>Logs</button>
+        {% if p.local_url %}<a class="btn-open disabled" href="{{ p.local_url }}" target="_blank" rel="noopener">Open ↗</a>{% endif %}
       </div>
       <pre class="logview" hidden></pre>
     </section>

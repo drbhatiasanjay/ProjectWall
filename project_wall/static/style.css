@@ -54,7 +54,23 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
 }
 .actions button:hover { border-color: #3a4058; }
 .actions .start:hover { border-color: var(--ok); }
-.actions .stop:hover { border-color: var(--err); }
+.actions .stop:hover  { border-color: var(--err); }
+.actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.actions button:disabled:hover { border-color: var(--border); }
+.actions .btn-open {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+  padding: 6px 8px; border-radius: 6px; font-size: 12px; text-decoration: none;
+  display: inline-flex; align-items: center;
+}
+.actions .btn-open:hover { border-color: #6E56CF; color: #a89be0; }
+.actions .btn-open.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
 .logview {
   background: #0a0b10; border: 1px solid var(--border); border-radius: 6px;
