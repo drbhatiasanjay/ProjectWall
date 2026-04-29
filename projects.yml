@@ -172,3 +172,47 @@ projects:
     command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
     port: 8080
     health: "http://127.0.0.1:{port}/"
+
+  - id: plantiq-api
+    name: PlantIQ API
+    category: local
+    color: "#16A34A"
+    icon: "🌱"
+    path: "c:/Users/hemas/Downloads/PlantIQ/pl/backend"
+    stack: express
+    command: ["node", "server.js"]
+    port: 3001
+    health: "http://127.0.0.1:{port}/"
+
+  - id: plantiq-web
+    name: PlantIQ Web
+    category: local
+    color: "#4ADE80"
+    icon: "🪴"
+    path: "c:/Users/hemas/Downloads/PlantIQ/pl/frontend"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5177
+    health: "http://127.0.0.1:{port}/"
+
+  - id: website-to-social
+    name: Website to Social
+    category: local
+    color: "#E11D48"
+    icon: "📱"
+    path: "c:/Users/hemas/Downloads/website-to-social"
+    stack: nextjs
+    command: ["npx", "next", "dev", "-p", "{port}"]
+    port: 3010
+    health: "http://127.0.0.1:{port}/"
+
+  - id: website-to-video
+    name: Website to Video
+    category: local
+    color: "#9333EA"
+    icon: "🎬"
+    path: "c:/Users/hemas/Downloads/website-to-video"
+    stack: nextjs
+    command: ["npx", "next", "dev", "-p", "{port}"]
+    port: 3011
+    health: "http://127.0.0.1:{port}/"
