@@ -40,3 +40,47 @@ projects:
     command: ["uvicorn", "v1.src.api.main:app", "--host", "127.0.0.1", "--port", "{port}"]
     port: 8012
     health: "http://127.0.0.1:{port}/docs"
+
+  - id: punepulse-api
+    name: PunePulse API
+    category: local
+    color: "#F97316"
+    icon: "🏙️"
+    path: "c:/Users/hemas/Downloads/punepulse/backend"
+    stack: fastapi
+    command: ["uvicorn", "api.main:app", "--host", "127.0.0.1", "--port", "{port}", "--reload"]
+    port: 8020
+    health: "http://127.0.0.1:{port}/"
+
+  - id: punepulse-web
+    name: PunePulse Web
+    category: local
+    color: "#FB923C"
+    icon: "🌆"
+    path: "c:/Users/hemas/Downloads/punepulse"
+    stack: expo
+    command: ["npm", "run", "web"]
+    port: 19006
+    health: "http://127.0.0.1:{port}/"
+
+  - id: data-analyst
+    name: Data Analyst Agent
+    category: local
+    color: "#10B981"
+    icon: "📊"
+    path: "c:/Users/hemas/Downloads/data-analyst-agent"
+    stack: streamlit
+    command: ["streamlit", "run", "app.py", "--server.port", "{port}", "--server.headless", "true", "--server.address", "127.0.0.1"]
+    port: 8502
+    health: "http://127.0.0.1:{port}/_stcore/health"
+
+  - id: worldmonitor
+    name: WorldMonitor
+    category: local
+    color: "#6366F1"
+    icon: "🌍"
+    path: "c:/Users/hemas/Downloads/worldmonitor"
+    stack: vite
+    command: ["npm", "run", "dev"]
+    port: 3000
+    health: "http://127.0.0.1:{port}/"
