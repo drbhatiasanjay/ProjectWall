@@ -81,8 +81,8 @@ projects:
     icon: "🌍"
     path: "c:/Users/hemas/Downloads/worldmonitor"
     stack: vite
-    command: ["npm", "run", "dev"]
-    port: 3000
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 3005
     health: "http://127.0.0.1:{port}/"
 
   - id: localpulse
@@ -128,3 +128,47 @@ projects:
     command: ["uvicorn", "main:app", "--host", "127.0.0.1", "--port", "{port}"]
     port: 8030
     health: "http://127.0.0.1:{port}/api/health"
+
+  - id: wifi-densepose-api
+    name: WiFi DensePose API
+    category: local
+    color: "#0EA5E9"
+    icon: "📡"
+    path: "c:/Users/hemas/Downloads/WIFI-DENSEPOSE/backend"
+    stack: fastapi
+    command: ["uvicorn", "api.main:app", "--host", "127.0.0.1", "--port", "{port}"]
+    port: 8040
+    health: "http://127.0.0.1:{port}/health"
+
+  - id: wifi-densepose-web
+    name: WiFi DensePose Web
+    category: local
+    color: "#38BDF8"
+    icon: "🧠"
+    path: "c:/Users/hemas/Downloads/WIFI-DENSEPOSE/web"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5175
+    health: "http://127.0.0.1:{port}/"
+
+  - id: document-portal
+    name: DocumentPortal
+    category: local
+    color: "#CA8A04"
+    icon: "📄"
+    path: "c:/Users/hemas/Downloads/DocumentPortal"
+    stack: express
+    command: ["node", "server.js"]
+    port: 3000
+    health: "http://127.0.0.1:{port}/"
+
+  - id: future-forge
+    name: Future Forge Lab
+    category: local
+    color: "#A855F7"
+    icon: "⚡"
+    path: "c:/Users/hemas/Downloads/future-forge-lab-34"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 8080
+    health: "http://127.0.0.1:{port}/"
