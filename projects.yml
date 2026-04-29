@@ -84,3 +84,47 @@ projects:
     command: ["npm", "run", "dev"]
     port: 3000
     health: "http://127.0.0.1:{port}/"
+
+  - id: localpulse
+    name: LocalPulse
+    category: local
+    color: "#8B5CF6"
+    icon: "📍"
+    path: "c:/Users/hemas/Downloads/localpulse"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5173
+    health: "http://127.0.0.1:{port}/"
+
+  - id: geostory-api
+    name: GeoStory API
+    category: local
+    color: "#059669"
+    icon: "🗺️"
+    path: "c:/Users/hemas/Downloads/GeoStory"
+    stack: fastapi
+    command: ["uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "{port}"]
+    port: 8010
+    health: "http://127.0.0.1:{port}/healthz"
+
+  - id: geostory-web
+    name: GeoStory Web
+    category: local
+    color: "#34D399"
+    icon: "🌐"
+    path: "c:/Users/hemas/Downloads/GeoStory/frontend"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5174
+    health: "http://127.0.0.1:{port}/"
+
+  - id: automotive-api
+    name: Automotive Debugger API
+    category: local
+    color: "#DC2626"
+    icon: "🚗"
+    path: "c:/Users/hemas/Downloads/automotive-debugger/python-backend"
+    stack: fastapi
+    command: ["uvicorn", "main:app", "--host", "127.0.0.1", "--port", "{port}"]
+    port: 8030
+    health: "http://127.0.0.1:{port}/api/health"
