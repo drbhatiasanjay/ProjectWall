@@ -216,3 +216,14 @@ projects:
     command: ["npx", "next", "dev", "-p", "{port}"]
     port: 3011
     health: "http://127.0.0.1:{port}/"
+
+  - id: engagepro
+    name: EngagePro
+    category: local
+    color: "#EC4899"
+    icon: "📋"
+    path: "c:/Users/hemas/Downloads/EngagePro"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5178
+    health: "http://127.0.0.1:{port}/"
