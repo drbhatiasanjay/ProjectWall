@@ -227,3 +227,245 @@ projects:
     command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
     port: 5178
     health: "http://127.0.0.1:{port}/"
+
+  - id: learninghub
+    name: LearningHub
+    category: local
+    color: "#8B5CF6"
+    icon: "🎓"
+    path: "c:/Users/hemas/Downloads/LearningHub"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5179
+    health: "http://127.0.0.1:{port}/"
+
+  - id: context-query-bot
+    name: Context Query Bot
+    category: local
+    color: "#06B6D4"
+    icon: "🤖"
+    path: "c:/Users/hemas/Downloads/context-query-bot"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5180
+    health: "http://127.0.0.1:{port}/"
+
+  - id: adit-last-chat
+    name: Adit Last Chat
+    category: local
+    color: "#3B82F6"
+    icon: "💬"
+    path: "c:/Users/hemas/Downloads/adit-last-chat"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5181
+    health: "http://127.0.0.1:{port}/"
+
+  - id: bookmark-spark
+    name: Bookmark Spark
+    category: local
+    color: "#F59E0B"
+    icon: "🔖"
+    path: "c:/Users/hemas/Downloads/bookmark-spark"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5182
+    health: "http://127.0.0.1:{port}/"
+
+  - id: dev-terminal-quest
+    name: Dev Terminal Quest
+    category: local
+    color: "#10B981"
+    icon: "⌨️"
+    path: "c:/Users/hemas/Downloads/dev-terminal-quest"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5183
+    health: "http://127.0.0.1:{port}/"
+
+  - id: earthscape-quest
+    name: Earthscape Quest
+    category: local
+    color: "#059669"
+    icon: "🌍"
+    path: "c:/Users/hemas/Downloads/earthscape-quest"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5184
+    health: "http://127.0.0.1:{port}/"
+
+  - id: itrca-chatbot-buddy
+    name: ITRCA Chatbot Buddy
+    category: local
+    color: "#6366F1"
+    icon: "📊"
+    path: "c:/Users/hemas/Downloads/itrca-chatbot-buddy"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5185
+    health: "http://127.0.0.1:{port}/"
+
+  - id: neomorphic-ai-studio
+    name: Neomorphic AI Studio
+    category: local
+    color: "#EC4899"
+    icon: "🎨"
+    path: "c:/Users/hemas/Downloads/neomorphic-ai-studio"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5186
+    health: "http://127.0.0.1:{port}/"
+
+  - id: secret-loveable-vault
+    name: Secret Loveable Vault
+    category: local
+    color: "#EF4444"
+    icon: "🔐"
+    path: "c:/Users/hemas/Downloads/secret-loveable-vault"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5187
+    health: "http://127.0.0.1:{port}/"
+
+  - id: voucher-wizard-guide
+    name: Voucher Wizard Guide
+    category: local
+    color: "#D97706"
+    icon: "🧾"
+    path: "c:/Users/hemas/Downloads/voucher-wizard-guide"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5188
+    health: "http://127.0.0.1:{port}/"
+
+  - id: adit-health-hub
+    name: Adit Health Hub
+    category: local
+    color: "#10B981"
+    icon: "🏥"
+    path: "c:/Users/hemas/Downloads/adit-health-hub"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5189
+    health: "http://127.0.0.1:{port}/"
+
+  - id: aura-learn
+    name: Aura Learn
+    category: local
+    color: "#A855F7"
+    icon: "✨"
+    path: "c:/Users/hemas/Downloads/aura-learn"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5190
+    health: "http://127.0.0.1:{port}/"
+
+  - id: culture-matcher
+    name: Culture Matcher
+    category: local
+    color: "#0EA5E9"
+    icon: "🌐"
+    path: "c:/Users/hemas/Downloads/culture-matcher"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5191
+    health: "http://127.0.0.1:{port}/"
+
+  - id: ember-learn-guide
+    name: Ember Learn Guide
+    category: local
+    color: "#F97316"
+    icon: "🔥"
+    path: "c:/Users/hemas/Downloads/ember-learn-guide"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5192
+    health: "http://127.0.0.1:{port}/"
+
+  - id: loshu-insight
+    name: Loshu Insight
+    category: local
+    color: "#6366F1"
+    icon: "🔢"
+    path: "c:/Users/hemas/Downloads/loshu-insight"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5193
+    health: "http://127.0.0.1:{port}/"
+
+  - id: microlearn-ai-coach
+    name: MicroLearn AI Coach
+    category: local
+    color: "#A855F7"
+    icon: "🧠"
+    path: "c:/Users/hemas/Downloads/microlearn-ai-coach"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5194
+    health: "http://127.0.0.1:{port}/"
+
+  - id: pre-dev-quest
+    name: Pre Dev Quest
+    category: local
+    color: "#0EA5E9"
+    icon: "🚀"
+    path: "c:/Users/hemas/Downloads/pre-dev-quest"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5195
+    health: "http://127.0.0.1:{port}/"
+
+  - id: project-prelude
+    name: Project Prelude
+    category: local
+    color: "#EC4899"
+    icon: "🎵"
+    path: "c:/Users/hemas/Downloads/project-prelude"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5196
+    health: "http://127.0.0.1:{port}/"
+
+  - id: remix-of-chanakya-learn
+    name: Remix of Chanakya Learn
+    category: local
+    color: "#059669"
+    icon: "📚"
+    path: "c:/Users/hemas/Downloads/remix-of-chanakya-learn"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5197
+    health: "http://127.0.0.1:{port}/"
+
+  - id: securepath-forge
+    name: SecurePath Forge
+    category: local
+    color: "#EF4444"
+    icon: "🔒"
+    path: "c:/Users/hemas/Downloads/securepath-forge"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5198
+    health: "http://127.0.0.1:{port}/"
+
+  - id: space-saver-ux
+    name: Space Saver UX
+    category: local
+    color: "#F59E0B"
+    icon: "🗂️"
+    path: "c:/Users/hemas/Downloads/space-saver-ux"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5199
+    health: "http://127.0.0.1:{port}/"
+
+  - id: supabase-relaunch-boost
+    name: Supabase Relaunch Boost
+    category: local
+    color: "#10B981"
+    icon: "⚡"
+    path: "c:/Users/hemas/Downloads/supabase-relaunch-boost"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5200
+    health: "http://127.0.0.1:{port}/"
