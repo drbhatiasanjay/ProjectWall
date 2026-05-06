@@ -469,3 +469,27 @@ projects:
     command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
     port: 5200
     health: "http://127.0.0.1:{port}/"
+
+  - id: lfv-api
+    name: LongFormVideo API
+    category: local
+    color: "#6366F1"
+    icon: "🎬"
+    path: "c:/Users/hemas/Downloads/1.LongFormVideo"
+    stack: fastapi
+    command: ["uv", "run", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "{port}"]
+    port: 8000
+    health: "http://127.0.0.1:{port}/healthz"
+    obsidian: "obsidian://open?vault=MySecondBrain&file=Projects/2026-05-04%20Short-Form%20Video%20Pipeline%20%E2%80%94%20Build%20Log"
+
+  - id: lfv-ui
+    name: LongFormVideo UI
+    category: local
+    color: "#8B5CF6"
+    icon: "🎞️"
+    path: "c:/Users/hemas/Downloads/1.LongFormVideo/frontend"
+    stack: nextjs
+    command: ["pnpm", "dev", "--", "-p", "{port}"]
+    port: 3002
+    health: "http://127.0.0.1:{port}/"
+    obsidian: "obsidian://open?vault=MySecondBrain&file=Projects/2026-05-04%20Short-Form%20Video%20Pipeline%20%E2%80%94%20Build%20Log"
