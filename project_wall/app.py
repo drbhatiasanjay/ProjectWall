@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -127,6 +128,38 @@ def create_app() -> FastAPI:
             return {"lines": mgr.tail(project_id, n=n)}
         except KeyError:
             raise HTTPException(404, f"Unknown project: {project_id}")
+
+    @app.websocket("/api/projects/{project_id}/logs/ws")
+    async def log_stream_ws(websocket: WebSocket, project_id: str):
+        mgr: ProcessManager = websocket.app.state.mgr
+        if project_id not in mgr._logs:
+            await websocket.close(code=4004)
+            return
+        await websocket.accept()
+        log = mgr._logs[project_id]
+        loop = asyncio.get_running_loop()
+        sid, q = log.subscribe(loop)
+        try:
+            for line in log.tail(100):
+                await websocket.send_text(line)
+            while True:
+                try:
+                    line = await asyncio.wait_for(q.get(), timeout=10.0)
+                except asyncio.TimeoutError:
+                    # Keepalive ping — JS filters empty strings
+                    try:
+                        await websocket.send_text("")
+                    except Exception:
+                        break
+                    continue
+                try:
+                    await websocket.send_text(line)
+                except Exception:
+                    break
+        except (WebSocketDisconnect, RuntimeError):
+            pass
+        finally:
+            log.unsubscribe(sid)
 
     @app.get("/api/health")
     async def health(request: Request):

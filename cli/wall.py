@@ -51,6 +51,7 @@ def cli() -> None:
 @click.option("--reload", is_flag=True, help="Enable uvicorn auto-reload")
 @click.option("--open-browser/--no-open-browser", default=True, help="Auto-open dashboard")
 @click.option("--quiet", is_flag=True, help="Suppress uvicorn access logs")
+@click.option("--tray/--no-tray", default=True, help="Show system tray icon (requires pystray extra)")
 def serve(
     host: str,
     port: int,
@@ -58,6 +59,7 @@ def serve(
     reload: bool,
     open_browser: bool,
     quiet: bool,
+    tray: bool,
 ) -> None:
     """Start the ProjectWall web dashboard and open it in the default browser.
 
@@ -83,6 +85,15 @@ def serve(
             args=(host, port),
             daemon=True,
         ).start()
+
+    if tray:
+        from project_wall.tray import start_tray_thread  # noqa: PLC0415
+        if start_tray_thread(host, port) is None:
+            click.echo(
+                "pystray not installed — no tray icon. "
+                "Run: pip install -e .[tray]",
+                err=True,
+            )
 
     click.echo(f"ProjectWall serving on http://{host}:{port}")
     log_level = "warning" if quiet else "info"

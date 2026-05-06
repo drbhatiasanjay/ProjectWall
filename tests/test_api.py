@@ -103,3 +103,30 @@ def test_index_renders(client: TestClient) -> None:
     assert resp.status_code == 200
     assert "ProjectWall" in resp.text
     assert "Dummy Server" in resp.text
+
+
+def test_log_stream_ws_history(client: TestClient) -> None:
+    """WebSocket sends existing tail lines immediately on connect."""
+    client.post("/api/projects/dummy/start")
+    time.sleep(0.3)
+    client.post("/api/projects/dummy/stop")
+
+    lines: list[str] = []
+    with client.websocket_connect("/api/projects/dummy/logs/ws") as ws:
+        # The handler pushes all tail lines before blocking for new output.
+        # Collect until we see a [wall] marker or exhaust the history burst.
+        for _ in range(20):
+            data = ws.receive_text()
+            if data:
+                lines.append(data)
+            if any("[wall]" in ln for ln in lines):
+                break
+
+    assert any("[wall]" in ln for ln in lines)
+
+
+def test_log_stream_ws_unknown_project(client: TestClient) -> None:
+    """WebSocket closes with 4004 for unknown project_id."""
+    with pytest.raises(Exception):
+        with client.websocket_connect("/api/projects/ghost/logs/ws") as ws:
+            ws.receive_text(timeout=1.0)

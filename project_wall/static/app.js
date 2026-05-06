@@ -64,17 +64,41 @@ async function refresh() {
     `${running} running · ${projectsResp.projects.length} configured`;
 }
 
-async function loadLogs(card) {
+const _logSockets = {};
+
+function toggleLogStream(card) {
   const id = card.dataset.id;
   const view = card.querySelector('.logview');
-  try {
-    const data = await api(`/api/projects/${id}/logs?n=120`);
-    view.textContent = data.lines.join('\n') || '(no logs yet)';
-    view.hidden = false;
-  } catch (err) {
-    view.textContent = `error: ${err.message}`;
-    view.hidden = false;
+  const btn = card.querySelector('.logs');
+
+  if (_logSockets[id]) {
+    _logSockets[id].close();
+    return;
   }
+
+  view.textContent = '';
+  view.hidden = false;
+  if (btn) btn.textContent = 'Logs ✕';
+
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const ws = new WebSocket(`${proto}//${location.host}/api/projects/${id}/logs/ws`);
+  _logSockets[id] = ws;
+
+  ws.onmessage = (ev) => {
+    if (!ev.data) return; // keepalive ping
+    view.textContent += ev.data + '\n';
+    view.scrollTop = view.scrollHeight;
+  };
+
+  ws.onclose = () => {
+    delete _logSockets[id];
+    view.hidden = true;
+    if (btn) btn.textContent = 'Logs';
+  };
+
+  ws.onerror = () => {
+    view.textContent += '\n[stream error]';
+  };
 }
 
 document.addEventListener('click', async (ev) => {
@@ -91,10 +115,11 @@ document.addEventListener('click', async (ev) => {
       await api(`/api/projects/${id}/start`, { method: 'POST' });
       await refresh();
     } else if (btn.classList.contains('stop')) {
+      if (_logSockets[id]) _logSockets[id].close();
       await api(`/api/projects/${id}/stop`, { method: 'POST' });
       await refresh();
     } else if (btn.classList.contains('logs')) {
-      await loadLogs(card);
+      toggleLogStream(card);
     }
   } catch (err) {
     const label = card.querySelector('.state-label');
