@@ -493,3 +493,14 @@ projects:
     port: 3002
     health: "http://127.0.0.1:{port}/"
     obsidian: "obsidian://open?vault=MySecondBrain&file=Projects/2026-05-04%20Short-Form%20Video%20Pipeline%20%E2%80%94%20Build%20Log"
+
+  - id: bharath-pm-strategy
+    name: Bharath PM Strategy
+    category: local
+    color: "#0EA5E9"
+    icon: "📈"
+    path: "c:/Users/hemas/Downloads/bharath-pm-strategy"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 5201
+    health: "http://127.0.0.1:{port}/"
