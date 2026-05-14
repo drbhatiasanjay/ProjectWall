@@ -504,3 +504,61 @@ projects:
     command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
     port: 5201
     health: "http://127.0.0.1:{port}/"
+
+  - id: worldmonitor-fork
+    name: WorldMonitor Fork
+    category: local
+    color: "#0891B2"
+    icon: "🌐"
+    path: "c:/Users/hemas/Downloads/worldmonitor-fork"
+    stack: vite
+    command: ["npm", "run", "dev", "--", "--port", "{port}", "--strictPort", "--host", "127.0.0.1"]
+    port: 3006
+    health: "http://127.0.0.1:{port}/"
+    live_url: "https://worldmonitor.app"
+
+  - id: eo-lab-wa
+    name: EO Lab WA
+    category: local
+    color: "#25D366"
+    icon: "💬"
+    path: "c:/Users/hemas/Downloads/EO_LAB_WA"
+    stack: fastapi
+    command: ["uvicorn", "main:app", "--host", "127.0.0.1", "--port", "{port}"]
+    port: 8001
+    health: "http://127.0.0.1:{port}/health"
+    obsidian: "obsidian://open?vault=MySecondBrain&file=Projects/EOLABSIN/EOLABSIN%20-%20Overview"
+
+  - id: ai-ugc-api
+    name: AI UGC Engine API
+    category: local
+    color: "#F97316"
+    icon: "🎬"
+    path: "c:/Users/hemas/Downloads/5.AI_UGC_Ads_Eng/ai-ugc-engine"
+    stack: fastapi
+    command: ["uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "{port}"]
+    port: 8050
+    health: "http://127.0.0.1:{port}/health"
+
+  - id: ai-ugc-ui
+    name: AI UGC Engine UI
+    category: local
+    color: "#FB923C"
+    icon: "🎥"
+    path: "c:/Users/hemas/Downloads/5.AI_UGC_Ads_Eng/ai-ugc-engine/frontend"
+    stack: nextjs
+    command: ["npx", "next", "dev", "-p", "{port}"]
+    port: 3003
+    health: "http://127.0.0.1:{port}/"
+
+  - id: screencurfew
+    name: ScreenCurfew
+    category: local
+    color: "#8B5CF6"
+    icon: "🛡️"
+    path: "c:/Users/hemas/Downloads/ParentalControl/screencurfew"
+    stack: expo
+    command: ["npx", "expo", "start", "--web", "--port", "{port}"]
+    port: 19007
+    health: "http://127.0.0.1:{port}/"
+    obsidian: "obsidian://open?vault=MySecondBrain&file=Projects/ScreenCurfew%20-%20Build%20Progress"
