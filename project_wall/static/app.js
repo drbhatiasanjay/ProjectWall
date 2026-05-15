@@ -33,6 +33,16 @@ function setCardState(card, entry, health) {
   const openLink = card.querySelector('.btn-open');
   if (openLink) openLink.classList.toggle('disabled', !running);
 
+  const crash = card.querySelector('.crash');
+  if (crash) {
+    if (!running && Array.isArray(state.crash_tail) && state.crash_tail.length) {
+      crash.textContent = state.crash_tail.join('\n');
+      crash.hidden = false;
+    } else {
+      crash.hidden = true;
+    }
+  }
+
   if (health) {
     if (health.ok) {
       healthEl.dataset.health = 'ok';
@@ -62,6 +72,23 @@ async function refresh() {
   }
   document.getElementById('summary').textContent =
     `${running} running · ${projectsResp.projects.length} configured`;
+  applyFilter();
+}
+
+function applyFilter() {
+  const input = document.getElementById('search');
+  const q = (input?.value || '').trim().toLowerCase();
+  let visible = 0, total = 0;
+  for (const card of document.querySelectorAll('.card')) {
+    total += 1;
+    const hit = !q || (card.dataset.search || '').includes(q);
+    card.classList.toggle('hidden', !hit);
+    if (hit) visible += 1;
+  }
+  if (q) {
+    document.getElementById('summary').textContent =
+      `${visible} of ${total} matching "${q}"`;
+  }
 }
 
 const _logSockets = {};
@@ -126,6 +153,8 @@ document.addEventListener('click', async (ev) => {
     if (label) label.textContent = `error: ${err.message}`;
   }
 });
+
+document.getElementById('search')?.addEventListener('input', applyFilter);
 
 refresh();
 setInterval(refresh, REFRESH_MS);

@@ -10,6 +10,7 @@
   <header class="topbar">
     <div class="brand">🧱 ProjectWall</div>
     <div class="meta">
+      <input id="search" type="search" placeholder="filter by name, id, stack…" autocomplete="off" spellcheck="false" />
       <span id="summary">…</span>
       <button id="refresh" type="button">Refresh</button>
     </div>
@@ -17,7 +18,7 @@
 
   <main id="grid" class="grid">
     {% for p in projects %}
-    <section class="card" data-id="{{ p.id }}" style="--accent: {{ p.color }}">
+    <section class="card" data-id="{{ p.id }}" data-search="{{ (p.id ~ ' ' ~ p.name ~ ' ' ~ p.stack)|lower }}" style="--accent: {{ p.color }}">
       <header class="card-head">
         <span class="icon">{{ p.icon }}</span>
         <h2>{{ p.name }}</h2>
@@ -38,6 +39,7 @@
         <button class="logs"  type="button" disabled>Logs</button>
         {% if p.local_url %}<a class="btn-open disabled" href="{{ p.local_url }}" target="_blank" rel="noopener">Open ↗</a>{% endif %}
       </div>
+      <pre class="crash" hidden></pre>
       <pre class="logview" hidden></pre>
     </section>
     {% endfor %}

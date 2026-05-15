@@ -44,6 +44,7 @@ def _state_public(state) -> dict:
         "exit_code": state.exit_code,
         "error": state.error,
         "running": state.pid is not None,
+        "crash_tail": state.crash_tail,
     }
 
 

@@ -23,6 +23,7 @@ class RunState:
     exit_code: int | None = None
     command: list[str] = field(default_factory=list)
     error: str | None = None
+    crash_tail: list[str] = field(default_factory=list)
 
 
 class ProcessManager:
@@ -49,6 +50,39 @@ class ProcessManager:
             target=self._idle_watcher_loop, daemon=True, name="wall-idle-watcher"
         )
         self._idle_thread.start()
+
+    def _load_dotenv(self, project: Project) -> dict[str, str]:
+        """Read project/.env (if present) and return a dict of KEY=VALUE pairs.
+
+        Minimal parser: ignores blank lines and `#` comments; strips surrounding
+        single/double quotes from values; tolerates `export KEY=VALUE` prefix.
+        Malformed lines are silently skipped — we never want a bad .env to
+        prevent a project from starting.
+        """
+        env_path = Path(project.path) / ".env"
+        if not env_path.is_file():
+            return {}
+        loaded: dict[str, str] = {}
+        try:
+            for raw in env_path.read_text(encoding="utf-8").splitlines():
+                line = raw.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if line.startswith("export "):
+                    line = line[len("export "):].lstrip()
+                key, sep, value = line.partition("=")
+                if not sep:
+                    continue
+                key = key.strip()
+                if not key:
+                    continue
+                value = value.strip()
+                if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+                    value = value[1:-1]
+                loaded[key] = value
+        except OSError:
+            return {}
+        return loaded
 
     def _resolve_exe(self, project: Project, argv: list[str]) -> list[str]:
         if not argv:
@@ -113,6 +147,11 @@ class ProcessManager:
             if sys.platform == "win32":
                 creationflags = subprocess.CREATE_NEW_PROCESS_GROUP  # type: ignore[attr-defined]
 
+            dotenv = self._load_dotenv(project)
+            child_env = {**os.environ, **dotenv} if dotenv else None
+            if dotenv:
+                log.write(f"[wall] loaded {len(dotenv)} vars from .env")
+
             try:
                 proc = subprocess.Popen(
                     argv,
@@ -123,6 +162,7 @@ class ProcessManager:
                     text=True,
                     bufsize=1,
                     creationflags=creationflags,
+                    env=child_env,
                 )
             except (FileNotFoundError, OSError) as exc:
                 state.error = f"Start failed: {exc}"
@@ -136,6 +176,7 @@ class ProcessManager:
             state.exit_code = None
             state.error = None
             state.command = argv
+            state.crash_tail = []
 
             if not self._job.assign(proc.pid):
                 log.write(
@@ -195,6 +236,11 @@ class ProcessManager:
             state = self._states[project_id]
             state.exit_code = proc.returncode
             state.pid = None
+            # Unexpected exit (not via stop()) with non-zero code — capture
+            # the last 20 log lines so the UI can show why it crashed without
+            # the user having to open the log stream.
+            if proc.returncode not in (None, 0):
+                state.crash_tail = self._logs[project_id].tail(20)
             self._procs.pop(project_id, None)
         return alive
 
