@@ -43,6 +43,9 @@ class ProcessManager:
         }
         self._lock = threading.RLock()
         self._job = WindowsJob()
+        # Projects the user explicitly started and has not explicitly stopped.
+        # The health monitor self-heals only these — idle/user stops opt out.
+        self._desired_running: set[str] = set()
 
         self._idle_check_interval_s = idle_check_interval_s
         self._idle_stop_event = threading.Event()
@@ -170,6 +173,7 @@ class ProcessManager:
                 return state
 
             self._procs[project_id] = proc
+            self._desired_running.add(project_id)
             state.pid = proc.pid
             state.started_at = time.time()
             state.last_activity_at = state.started_at
@@ -197,6 +201,9 @@ class ProcessManager:
             proc = self._procs.get(project_id)
             if state is None:
                 raise KeyError(f"Unknown project: {project_id}")
+            # An explicit stop (user, idle-watcher, or shutdown) opts the
+            # project out of self-healing until it is started again.
+            self._desired_running.discard(project_id)
             if proc is None or proc.poll() is not None:
                 state.pid = None
                 return state
@@ -250,6 +257,11 @@ class ProcessManager:
 
     def all_states(self) -> dict[str, RunState]:
         return {pid: self.state(pid) for pid in self._states}
+
+    def desired_running(self) -> set[str]:
+        """Project IDs the user wants up — the self-heal candidate set."""
+        with self._lock:
+            return set(self._desired_running)
 
     def tail(self, project_id: str, n: int = 100) -> list[str]:
         return self._logs[project_id].tail(n)

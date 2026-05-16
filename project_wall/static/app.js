@@ -156,5 +156,32 @@ document.addEventListener('click', async (ev) => {
 
 document.getElementById('search')?.addEventListener('input', applyFilter);
 
+async function checkVersion() {
+  const banner = document.getElementById('update-banner');
+  if (!banner) return;
+  try {
+    const v = await api('/api/version');
+    if (v.update_available) {
+      const n = v.behind_by || 0;
+      banner.textContent =
+        `⬆ Update available — ${n} commit${n === 1 ? '' : 's'} behind. ` +
+        `git pull && restart the wall.`;
+      banner.hidden = false;
+    } else {
+      banner.hidden = true;
+    }
+  } catch {
+    banner.hidden = true;
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
 refresh();
+checkVersion();
 setInterval(refresh, REFRESH_MS);
+setInterval(checkVersion, 120000);

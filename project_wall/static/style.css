@@ -94,6 +94,30 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); f
   font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color: #f4a8a6;
 }
+
+#update-banner {
+  display: block; text-decoration: none;
+  background: #2a2410; color: var(--warn);
+  border-bottom: 1px solid var(--warn);
+  padding: 8px 20px; font-size: 13px; font-weight: 600;
+  text-align: center; letter-spacing: 0.2px;
+}
+#update-banner:hover { background: #34300f; }
+#update-banner[hidden] { display: none; }
+
+/* Mobile / installed-PWA layout */
+@media (max-width: 640px) {
+  .topbar { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 14px; }
+  .meta { flex-wrap: wrap; }
+  #search { width: 100%; }
+  .grid { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+  .actions { flex-wrap: wrap; }
+  .actions button, .actions .btn-open { min-height: 40px; }  /* comfortable tap targets */
+  .logview, .crash { max-height: 50vh; }
+}
+@supports (padding: max(0px)) {
+  body { padding-bottom: env(safe-area-inset-bottom); }
+}
 .crash::before {
   content: "crash — last 20 log lines";
   display: block; color: var(--err); font-weight: 600;

@@ -2,17 +2,21 @@ from __future__ import annotations
 
 import asyncio
 import os
+import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+from .alerts import EmailAlerter
 from .config import Project, WallConfig, load_config
 from .health import probe_many
 from .manager import ProcessManager
+from .monitor import HealthMonitor
+from .version import version_payload
 
 PKG_DIR = Path(__file__).resolve().parent
 ROOT_DIR = PKG_DIR.parent
@@ -48,17 +52,40 @@ def _state_public(state) -> dict:
     }
 
 
+def _make_wall_logger(log_dir: Path):
+    log_dir.mkdir(parents=True, exist_ok=True)
+    path = log_dir / "wall.log"
+
+    def _log(msg: str) -> None:
+        line = f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}"
+        try:
+            with open(path, "a", encoding="utf-8") as fh:
+                fh.write(line + "\n")
+        except OSError:
+            pass
+
+    return _log
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     cfg_path = Path(os.environ.get("WALL_CONFIG", DEFAULT_CONFIG))
     log_dir = Path(os.environ.get("WALL_LOGS", DEFAULT_LOG_DIR))
     cfg = load_config(cfg_path)
     mgr = ProcessManager(cfg, log_dir)
+    wall_log = _make_wall_logger(log_dir)
+    alerter = EmailAlerter(log=wall_log)
+    monitor = HealthMonitor(mgr, cfg, alerter, log=wall_log)
+    monitor.start()
     app.state.cfg = cfg
     app.state.mgr = mgr
+    app.state.alerter = alerter
+    app.state.monitor = monitor
+    app.state.log_dir = log_dir
     try:
         yield
     finally:
+        monitor.shutdown()
         mgr.shutdown()
 
 
@@ -121,6 +148,32 @@ def create_app() -> FastAPI:
         except KeyError:
             raise HTTPException(404, f"Unknown project: {project_id}")
         return JSONResponse(_state_public(state))
+
+    @app.get("/api/version")
+    async def version(request: Request):
+        log_dir = request.app.state.log_dir
+        return version_payload(log_dir)
+
+    @app.get("/api/monitor")
+    async def monitor_events(request: Request):
+        mon: HealthMonitor = request.app.state.monitor
+        return {"events": mon.events()}
+
+    @app.get("/manifest.webmanifest")
+    async def manifest():
+        return FileResponse(
+            PKG_DIR / "static" / "manifest.webmanifest",
+            media_type="application/manifest+json",
+        )
+
+    @app.get("/sw.js")
+    async def service_worker():
+        # Served from root so its scope is the whole app, not just /static.
+        return FileResponse(
+            PKG_DIR / "static" / "sw.js",
+            media_type="text/javascript",
+            headers={"Service-Worker-Allowed": "/", "Cache-Control": "no-cache"},
+        )
 
     @app.get("/api/projects/{project_id}/logs")
     async def project_logs(project_id: str, request: Request, n: int = 100):
